@@ -22,7 +22,7 @@ class Layout:
         pos_y = 200+10  #posicao y inicial do primeiro botao
         pos = 0    #variavel para diferenciar cada botao com um numero
         lista_buttons = ['nada' for c in range(9)]  #lista que armazena os botoes criados
-        lista_colors = ['gray35' for c in range(9)]
+        lista_colors = ['white' for c in range(9)]
 
         for linha in range(3):
             for coluna in range(3):
@@ -33,14 +33,15 @@ class Layout:
             pos_x = 50+10
             pos_y += 113
 
+        
+
         return lista_colors
 
 
 
     def text(self, txt,size,color):
         font = pygame.font.SysFont('arial', size, False, False)
-        texto = input('digite: ')
-        #texto = f'{txt}'
+        texto = f'{txt}'
         final_text = font.render(texto, True, color)
         return final_text
 
