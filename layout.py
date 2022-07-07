@@ -5,6 +5,9 @@ o tamanho do fundo dos botoes tera uma reduçao de -50, pois serao 5 espacos com
 
 
 import pygame
+from backend import Back
+
+backend = Back()
 
 class Layout:
     def __init__(self):
@@ -12,8 +15,9 @@ class Layout:
         self.color2 = 1
 
     def terminal(self,surf):     
-        #borda = pygame.draw.rect(surf, (120,120,120), (45,45, 410,110))
-        terminal = pygame.draw.rect(surf, (100,100,100), (50,50, 500,100))
+        borda = pygame.draw.rect(surf, (120,120,120), (50,50, 500,100))
+        terminal = pygame.draw.rect(surf, (70,70,70), (55,55,490,90))
+
 
     def buttons(self,surf):
         background = pygame.draw.rect(surf, (120,120,120), (50,200, 350,350))
@@ -29,15 +33,12 @@ class Layout:
                 button = pygame.draw.rect(surf, (lista_colors[pos]), (pos_x,pos_y,103,103))
                 pos_x += 113   
                 lista_buttons[pos] = button
-                pos += 1  
+                pos += 1
+
             pos_x = 50+10
             pos_y += 113
 
-        
-
         return lista_colors
-
-
 
     def text(self, txt,size,color):
         font = pygame.font.SysFont('arial', size, False, False)

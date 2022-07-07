@@ -5,6 +5,7 @@ clock = pygame.time.Clock()
 
 font = pygame.font.SysFont(None, 100)
 text = ""
+text2 = ''
 input_active = True
 
 run = True
@@ -21,8 +22,12 @@ while run:
                 input_active = False
             elif event.key == pygame.K_BACKSPACE:
                 text = text[:-1]
+                print(text)
             else:
                 text += event.unicode
+                print(text)
+                
+
 
     window.fill(0)
     text_surf = font.render(text, True, (255, 0, 0))      #variavel que recebe o texto formatado
