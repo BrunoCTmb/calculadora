@@ -35,28 +35,28 @@ while True:
             input_active = True
             text = ''
             ocult = ''
+            total = 0
         elif event.type == pygame.KEYDOWN and input_active:
             if event.key == pygame.K_RETURN:
-                input_active = False              
+                input_active = False
             elif event.key == pygame.K_BACKSPACE:
                 text = text[:-1]
                 ocult = ocult[:-1]
             else:
                 if event.unicode.isnumeric() or event.unicode == '+':
-                    if event.unicode == '+':
-                        num = int(ocult)
-                        total += num
-                        ocult = ''
-                    elif event.unicode.isnumeric():
-                        ocult += event.unicode
-                    text += event.unicode
+                    if text == '' and event.unicode == '+':  #nao pode comecar com sinal 
+                        pass
+                    elif len(text) > 0 and text[-1] == '+' and event.unicode == '+':  #digitar apenas um sinal 
+                        pass
+                    else:
+                        if event.unicode == '+' and len(text) > 0:
+                            num = int(ocult)
+                            total += num
+                            ocult = ''
+                        elif event.unicode.isnumeric():
+                            ocult += event.unicode
+                        text += event.unicode
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_TAB:
-                print('total:', total)
-            if event.key == pygame.K_CAPSLOCK:
-                print('ocult:', ocult)
-                
 
     texto = Text().text(text, 20, 'green')
     screen.blit(texto, (200,200))
