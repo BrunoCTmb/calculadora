@@ -1,2 +1,64 @@
-def soma():
-    return 
+import pygame, sys
+from pygame.locals import *
+from layout import Layout
+
+pygame.init()
+
+width = 600
+height = 600
+screen = pygame.display.set_mode((width, height))
+window_name = pygame.display.set_caption('Calculadora')
+
+text = ''
+input_active = True
+total = 0
+num = 0
+ocult = ''
+
+class Text:
+    def __init__(self):
+        pass
+
+    def text(self, txt,size,color):
+        font = pygame.font.SysFont('arial', size, False, False)
+        texto = f'{txt}'
+        final_text = font.render(texto, True, color)
+        return final_text
+
+while True:
+    screen.fill((40,40,40))
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            input_active = True
+            text = ''
+            ocult = ''
+        elif event.type == pygame.KEYDOWN and input_active:
+            if event.key == pygame.K_RETURN:
+                input_active = False              
+            elif event.key == pygame.K_BACKSPACE:
+                text = text[:-1]
+                ocult = ocult[:-1]
+            else:
+                if event.unicode.isnumeric() or event.unicode == '+':
+                    if event.unicode == '+':
+                        num = int(ocult)
+                        total += num
+                        ocult = ''
+                    elif event.unicode.isnumeric():
+                        ocult += event.unicode
+                    text += event.unicode
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_TAB:
+                print('total:', total)
+            if event.key == pygame.K_CAPSLOCK:
+                print('ocult:', ocult)
+                
+
+    texto = Text().text(text, 20, 'green')
+    screen.blit(texto, (200,200))
+        
+    pygame.display.flip()
