@@ -1,23 +1,26 @@
-from turtle import back, backward
 import pygame
 from backend import Backend
 from layout import Layout
+from t1 import Click
 
 pygame.init()
 
-width = 640
-height = 480
+width = 600
+height = 600
 screen = pygame.display.set_mode((width, height))
 nome_programa = pygame.display.set_caption('Calculator')
 
 backend = Backend()
 layout = Layout()
+click = Click()
 
 while True:
-    screen.fill('white')
+    screen.fill((70,70,70))
     backend.running()
 
-    text = layout.text(backend.text, 20, 'red')
-    screen.blit(text, (200,200))
+    layout.run(screen)
+
+    text = layout.text(backend.text, 60, 'black')
+    screen.blit(text, (65,86))
 
     pygame.display.flip()

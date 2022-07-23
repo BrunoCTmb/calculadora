@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from sys import exit
+from t1 import Click
 
 class Backend:
     def __init__(self):
@@ -13,7 +14,7 @@ class Backend:
         self.tot = 0  
         
     def isthing(self, valor):
-        if valor == '+' or valor == '-' or valor == '*' or valor == '/' or valor == '=':
+        if valor == '+' or valor == '-' or valor == '*' or valor == '/' or valor == '=' or valor == '^':
             return True
         else:
             return False
@@ -34,7 +35,11 @@ class Backend:
         elif self.sinal == '/':
             self.num = int(self.ocult)
             self.total /= self.num
-            self.ocult = ''      
+            self.ocult = ''
+        elif self.sinal == '^':
+            self.num = int(self.ocult)
+            self.total **= self.num
+            self.ocult = ''    
         
     def running(self):
         for event in pygame.event.get():
@@ -42,6 +47,8 @@ class Backend:
                 pygame.quit()
                 exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                Click().clicks()
+
                 self.input_active = True
                 self.total = 0
                 self.num = 0
@@ -51,12 +58,11 @@ class Backend:
                 self.tot = 0  
             elif event.type == pygame.KEYDOWN and self.input_active:
                 if event.key == pygame.K_RETURN:
-                    self.input_active = False
-                    #self.operacoes()
-                    self.text += f' = {self.tot}'
+                    pass
                 elif event.key == pygame.K_BACKSPACE:
-                    self.text = self.text[:-1]
-                    self.ocult = self.ocult[:-1]
+                    if self.isthing(self.text[-1]) == False:
+                        self.text = self.text[:-1]
+                        self.ocult = self.ocult[:-1]
                 else:
                     if event.unicode.isnumeric() or self.isthing(event.unicode):
                         if self.text == '' and event.unicode == '+':  #nao pode comecar com sinal 
@@ -71,11 +77,10 @@ class Backend:
                                 if self.sinal == '=':
                                     self.input_active = False
                                     self.text += f' = {self.total}'
-                                print(f'total: {self.total} | sinal: {self.sinal}')
                             elif event.unicode.isnumeric():  #se for digitado numero
                                 self.ocult += event.unicode
-                            self.text += event.unicode
-                        
+                            if event.unicode != '=':  #para não mostrar o sinal de '=' no terminal da calculadora
+                                self.text += event.unicode
 
     def run(self):
         pass
