@@ -11,6 +11,9 @@ window_name = pygame.display.set_caption('Calculadora')
 
 text = ''
 input_active = True
+total = 0
+num = 0
+ocult = ''
 
 class Text:
     def __init__(self):
@@ -22,6 +25,10 @@ class Text:
         final_text = font.render(texto, True, color)
         return final_text
 
+def soma():
+    total += num
+    return total
+
 while True:
     screen.fill((40,40,40))
     for event in pygame.event.get():
@@ -31,11 +38,18 @@ while True:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             input_active = True
             text = ''
+            ocult = ''
+            total = 0
         elif event.type == pygame.KEYDOWN and input_active:
             if event.key == pygame.K_RETURN:
-                input_active = False              
+                input_active = False
+                num = int(ocult)
+                total += num
+                ocult = ''
+                text += f' = {total}'
             elif event.key == pygame.K_BACKSPACE:
                 text = text[:-1]
+                ocult = ocult[:-1]
             else:
                 if event.unicode.isnumeric() or event.unicode == '+':
                     if text == '' and event.unicode == '+':  #nao pode comecar com sinal 
@@ -43,8 +57,15 @@ while True:
                     elif len(text) > 0 and text[-1] == '+' and event.unicode == '+':  #digitar apenas um sinal 
                         pass
                     else:
+                        if event.unicode == '+' and len(text) > 0:
+                            num = int(ocult)
+                            total += num
+                            ocult = ''
+                        elif event.unicode.isnumeric():
+                            ocult += event.unicode
+                        print(ocult)
                         text += event.unicode
-                
+
 
     texto = Text().text(text, 20, 'green')
     screen.blit(texto, (200,200))

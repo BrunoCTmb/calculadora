@@ -14,6 +14,7 @@ input_active = True
 total = 0
 num = 0
 ocult = ''
+sinal = '+'
 
 class Text:
     def __init__(self):
@@ -24,6 +25,12 @@ class Text:
         texto = f'{txt}'
         final_text = font.render(texto, True, color)
         return final_text
+
+def soma():
+    total += num
+    return total
+
+
 
 while True:
     screen.fill((40,40,40))
@@ -39,20 +46,37 @@ while True:
         elif event.type == pygame.KEYDOWN and input_active:
             if event.key == pygame.K_RETURN:
                 input_active = False
+                if sinal == '+':
+                    num = int(ocult)
+                    total += num
+                    ocult = ''
+                elif sinal == '-':
+                    num = int(ocult)
+                    total -= num
+                    ocult = ''                
+                text += f' = {total}'
             elif event.key == pygame.K_BACKSPACE:
                 text = text[:-1]
                 ocult = ocult[:-1]
             else:
-                if event.unicode.isnumeric() or event.unicode == '+':
+                if event.unicode.isnumeric() or event.unicode == '+' or event.unicode == '-' or event.unicode == '=': 
                     if text == '' and event.unicode == '+':  #nao pode comecar com sinal 
                         pass
                     elif len(text) > 0 and text[-1] == '+' and event.unicode == '+':  #digitar apenas um sinal 
                         pass
                     else:
-                        if event.unicode == '+' and len(text) > 0:
-                            num = int(ocult)
-                            total += num
-                            ocult = ''
+                        if event.unicode == '+' or event.unicode == '-' or event.unicode == '=' and len(text) > 0:
+                            sinal = event.unicode
+                            if sinal == '+':
+                                num = int(ocult)
+                                total += num
+                                ocult = ''
+                            elif sinal == '-':
+                                num = int(ocult)
+                                total -= num
+                                ocult = ''
+                            print(total)
+                            
                         elif event.unicode.isnumeric():
                             ocult += event.unicode
                         text += event.unicode

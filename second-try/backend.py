@@ -1,0 +1,81 @@
+import pygame
+from pygame.locals import *
+from sys import exit
+
+class Backend:
+    def __init__(self):
+        self.input_active = True
+        self.total = 0
+        self.num = 0
+        self.ocult = ''
+        self.text = ''
+        self.sinal = '+'      
+        self.tot = 0  
+        
+    def isthing(self, valor):
+        if valor == '+' or valor == '-' or valor == '*' or valor == '/' or valor == '=':
+            return True
+        else:
+            return False
+
+    def operacoes(self):
+        if self.sinal == '+':
+            self.num = int(self.ocult)
+            self.total += self.num
+            self.ocult = ''
+        elif self.sinal == '-':
+            self.num = int(self.ocult)
+            self.total -= self.num
+            self.ocult = ''
+        elif self.sinal == '*':
+            self.num = int(self.ocult)
+            self.total *= self.num
+            self.ocult = ''   
+        elif self.sinal == '/':
+            self.num = int(self.ocult)
+            self.total /= self.num
+            self.ocult = ''      
+        
+    def running(self):
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                self.input_active = True
+                self.total = 0
+                self.num = 0
+                self.ocult = ''
+                self.text = ''
+                self.sinal = '+'      
+                self.tot = 0  
+            elif event.type == pygame.KEYDOWN and self.input_active:
+                if event.key == pygame.K_RETURN:
+                    self.input_active = False
+                    #self.operacoes()
+                    self.text += f' = {self.tot}'
+                elif event.key == pygame.K_BACKSPACE:
+                    self.text = self.text[:-1]
+                    self.ocult = self.ocult[:-1]
+                else:
+                    if event.unicode.isnumeric() or self.isthing(event.unicode):
+                        if self.text == '' and event.unicode == '+':  #nao pode comecar com sinal 
+                            pass
+                        elif len(self.text) > 0 and self.isthing(self.text[-1]) and self.isthing(event.unicode):  #digitar apenas um sinal 
+                            pass
+                        else:
+                            if self.isthing(event.unicode) and len(self.text) > 0: #se for digitado um sinal
+                                self.operacoes()
+                                self.tot = self.total
+                                self.sinal = event.unicode
+                                if self.sinal == '=':
+                                    self.input_active = False
+                                    self.text += f' = {self.total}'
+                                print(f'total: {self.total} | sinal: {self.sinal}')
+                            elif event.unicode.isnumeric():  #se for digitado numero
+                                self.ocult += event.unicode
+                            self.text += event.unicode
+                        
+
+    def run(self):
+        pass
